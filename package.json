@@ -1,0 +1,24 @@
+{
+  "name": "flow-logger",
+  "version": "0.0.1",
+  "description": "",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TwoAbove/flow-logger.git"
+  },
+  "author": "Seva Maltsev",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TwoAbove/flow-logger/issues"
+  },
+  "homepage": "https://github.com/TwoAbove/flow-logger#readme",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^4.0.1",
+    "sinon": "^4.1.2"
+  }
+}
