@@ -23,8 +23,8 @@ describe('Logger', async () => {
     const now = Date.now();
 
     const logger = new Logger();
-    logger.message('test', 'comment');
-    expect(logger.toString()).to.equal('{"test":{"comment":"comment","time":0}}');
+    logger.message('test');
+    expect(logger.toString()).to.equal('{"messages":{"0":"test"}}');
   });
 
   it('Should correctly show error', () => {
@@ -54,8 +54,8 @@ describe('Logger', async () => {
     const clock = sinon.useFakeTimers();
     const logger = new Logger();
 
-    logger.message('test', Buffer.from('1'));
-    expect(logger.toString()).to.equal('{"test":{"comment":"MQ==","time":0}}');
+    logger.message(Buffer.from('1'));
+    expect(logger.toString()).to.equal('{"messages":{"0":"MQ=="}}');
     clock.restore();
   });
 });
