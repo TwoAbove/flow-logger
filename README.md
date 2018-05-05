@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/TwoAbove/flow-logger.svg?branch=master)](https://travis-ci.org/TwoAbove/flow-logger)
 # flow-logger
 > A logger with a horrible name
 
