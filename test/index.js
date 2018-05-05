@@ -9,11 +9,11 @@ describe('Logger', async () => {
     const now = Date.now();
 
     const logger = new Logger();
-    logger.timed('test1', 'first test');
+    const end = logger.timed('test1', 'first test');
     expect(+logger.test1.startedAt).to.equal(+now);
     expect(logger.test1.comment).to.equal('first test');
     clock.tick(500);
-    logger.test1.end();
+    end();
     expect(+logger.test1.endedAt).to.equal(+now + 500);
     clock.restore();
   });
@@ -24,7 +24,7 @@ describe('Logger', async () => {
 
     const logger = new Logger();
     logger.message('test');
-    expect(logger.toString()).to.equal('{"messages":{"0":"test"}}');
+    expect(logger.toString()).to.equal('{"messages":{"1970-01-01T00:00:00.000Z":"test"}}');
   });
 
   it('Should correctly show error', () => {
@@ -35,18 +35,18 @@ describe('Logger', async () => {
     const e = new Error('bla');
     e.stack = 'at Bla';
     logger.error(e);
-    expect(logger.toString()).to.equal('{"errored":true,"error":{"stack":"at Bla","message":"bla"},"erroredAt":0}');
+    expect(logger.toString()).to.equal('{"errored":true,"error":{"stack":"at Bla","message":"bla"},"erroredAt":"1970-01-01T00:00:00.000Z"}');
   });
 
   it('Should correctly stringify logged', () => {
     const clock = sinon.useFakeTimers();
     const now = Date.now();
 
-    const logger = new Logger('test');
-    logger.timed('test1', 'first test');
+    const logger = new Logger({ name: 'test' });
+    const end = logger.timed('test1', 'first test');
     clock.tick(500);
-    logger.test1.end();
-    expect(logger.toString()).to.equal('{"name":"test","test1":{"comment":"first test","startedAt":0,"endedAt":500,"duration":500}}');
+    end();
+    expect(logger.toString()).to.equal('{"name":"test","test1":{"comment":"first test","startedAt":"1970-01-01T00:00:00.000Z","endedAt":"1970-01-01T00:00:00.500Z","duration":500}}');
     clock.restore();
   });
 
@@ -55,7 +55,7 @@ describe('Logger', async () => {
     const logger = new Logger();
 
     logger.message(Buffer.from('1'));
-    expect(logger.toString()).to.equal('{"messages":{"0":"MQ=="}}');
+    expect(logger.toString()).to.equal('{"messages":{"1970-01-01T00:00:00.000Z":"MQ=="}}');
     clock.restore();
   });
 });
