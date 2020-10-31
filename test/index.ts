@@ -1,14 +1,14 @@
-const sinon = require('sinon');
-const expect = require('chai').expect;
+import sinon from 'sinon';
+import { expect } from 'chai';
 
-const Logger = require('../lib');
+import Logger from '../src';
 
 describe('Logger', async () => {
 	it('Should create a logged field with stuff', async () => {
 		const clock = sinon.useFakeTimers();
 		const now = Date.now();
 
-		const logger = new Logger();
+		const logger = new Logger({} as any);
 		const end = logger.timed('test1', 'first test');
 		expect(+logger.test1.startedAt).to.equal(+now);
 		expect(logger.test1.comment).to.equal('first test');
@@ -22,7 +22,7 @@ describe('Logger', async () => {
 		const clock = sinon.useFakeTimers();
 		const now = Date.now();
 
-		const logger = new Logger();
+		const logger = new Logger({} as any);
 		logger.message('test');
 		expect(logger.toString()).to.equal(
 			'{"messages":{"1970-01-01T00:00:00.000Z":"test"}}'
@@ -39,7 +39,7 @@ describe('Logger', async () => {
 		const clock = sinon.useFakeTimers();
 		const now = Date.now();
 
-		const logger = new Logger();
+		const logger = new Logger({} as any);
 		const e = new Error('bla');
 		e.stack = 'at Bla';
 		logger.setError(e);
@@ -52,7 +52,7 @@ describe('Logger', async () => {
 		const clock = sinon.useFakeTimers();
 		const now = Date.now();
 
-		const logger = new Logger({ name: 'test' });
+		const logger = new Logger({ name: 'test' } as any);
 		const end = logger.timed('test1', 'first test');
 		clock.tick(500);
 		end();
@@ -64,7 +64,7 @@ describe('Logger', async () => {
 
 	it('Should change Buffer to base64', () => {
 		const clock = sinon.useFakeTimers();
-		const logger = new Logger();
+		const logger = new Logger({} as any);
 
 		logger.message(Buffer.from('1'));
 		expect(logger.toString()).to.equal(

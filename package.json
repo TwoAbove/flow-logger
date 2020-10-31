@@ -1,10 +1,12 @@
 {
   "name": "flow-logger",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Logging helper for microservices",
-  "main": "lib/index.js",
+  "main": "./build/cjs/index.js",
+  "module": "./build/esm/index.js",
   "scripts": {
-    "test": "mocha test"
+    "build": "rimraf build && tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
+    "test": "ts-mocha -p tsconfig-cjs.json test/**/*.ts"
   },
   "repository": {
     "type": "git",
@@ -17,9 +19,15 @@
   },
   "homepage": "https://github.com/TwoAbove/flow-logger#readme",
   "devDependencies": {
+    "@types/circular-json": "^0.4.0",
+    "@types/node": "^14.14.6",
     "chai": "^4.2.0",
-    "mocha": "^7.0.1",
-    "sinon": "^8.1.1"
+    "mocha": "^8.2.0",
+    "rimraf": "^3.0.2",
+    "sinon": "^8.1.1",
+    "ts-mocha": "^8.0.0",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.5"
   },
   "dependencies": {
     "circular-json": "^0.5.9",
