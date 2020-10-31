@@ -1,19 +1,23 @@
-[![Build Status](https://travis-ci.org/TwoAbove/flow-logger.svg?branch=master)](https://travis-ci.org/TwoAbove/flow-logger)
 # flow-logger
+
+[![Build Status](https://travis-ci.org/TwoAbove/flow-logger.svg?branch=master)](https://travis-ci.org/TwoAbove/flow-logger)
+
+
 > A logger with a horrible name
 
 This is a logger that is used for creating prod-ready message and performance logs for an app consisting of microservices. It outputs logs in a way that allows for easy graylog parsing using [extractors](http://docs.graylog.org/en/2.4/pages/extractors.html)
 
-# Instantiation:
+## Instantiation
 
-```
+```sh
 npm i --save flow-logger
 ```
 
-# Usage:
+## Usage
 
-```js
-const Logger = require('flow-logger');
+```ts
+import Logger from 'flow-logger';
+
 const logger = new Logger({ name: 'microservice-1',  persistentId: message.flowId, version: '1.2.3'});
 logger.message('Hi!');
 ...
