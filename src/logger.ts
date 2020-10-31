@@ -1,14 +1,14 @@
-const moment = require('moment');
-const decircuralize = require('circular-json').stringify;
+import moment from 'moment';
+import { stringify as decircuralize } from 'circular-json';
 
-const replace = (key, value) => {
-	if (value instanceof moment) {
+const replace = (key: string, value: any) => {
+	if (moment.isMoment(value)) {
 		return value.toISOString();
 	}
 	if (value instanceof Error) {
 		const error = {};
 		Object.getOwnPropertyNames(value).forEach(k => {
-			error[k] = value[k];
+			(error as any)[k] = (value as any)[k];
 		});
 		return error;
 	}
@@ -18,23 +18,38 @@ const replace = (key, value) => {
 	return value;
 };
 
-const clean = json => decircuralize(json, replace, null, true);
+const clean = (json: any) => decircuralize(json, replace, null, true);
 
 class Logger {
-	constructor({ name, persistentId, version } = {}) {
-		this.name = name;
-		this.persistentId = persistentId;
-		this.version = version;
+	[key: string]: any
+	name: string;
+	persistentId: string;
+	version: string;
+	errored?: boolean;
+	error?: Error;
+	erroredAt?: moment.Moment;
+	messages?: {
+		[key: string]: any;
+	};
+
+	constructor(config: {
+		name: string;
+		persistentId: string;
+		version: string;
+	}) {
+		this.name = config.name;
+		this.persistentId = config.persistentId;
+		this.version = config.version;
 	}
 
 	get now() {
 		return moment();
 	}
 
-	timed(what, comment, duplicate = 1) {
+	timed(what: string, comment: string, duplicate = 1): () => void {
 		const name = `${what}-${duplicate}`;
 		if (this[name]) {
-			return timed(what, comment, duplicate + 1);
+			return this.timed(what, comment, duplicate + 1);
 		}
 		this[what] = {
 			comment,
@@ -47,13 +62,13 @@ class Logger {
 		return end;
 	}
 
-	setError(e) {
+	setError(e: Error): void {
 		this.errored = true;
 		this.error = e;
 		this.erroredAt = this.now;
 	}
 
-	message(...comments) {
+	message(...comments: any[]): void {
 		if (!this.messages) {
 			this.messages = {};
 		}
@@ -61,7 +76,7 @@ class Logger {
 			comments.length > 1 ? comments : comments[0];
 	}
 
-	log() {
+	log(): void {
 		// eslint-disable-next-line no-console
 		console.log(this.toString());
 	}
@@ -71,4 +86,4 @@ Logger.prototype.toString = function toString() {
 	return clean(this);
 };
 
-module.exports = Logger;
+export default Logger;
